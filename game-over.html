@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="Icon" href="img/logo.png" type="image/Icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <style>
+        body {
+            background-color: black;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            position: relative; /* Menambahkan posisi relatif untuk kontainer */
+        }
+
+        p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 72px;
+            color: red;
+            opacity: 0;
+            animation: appearAndType 2s ease-in-out forwards, typing 4s steps(14) forwards 2s;
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid white;
+        }
+
+button {
+            background-color: #f00; /* Tombol latar merah neon */
+            color: #000; /* Warna teks hitam */
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s; /* Menambahkan animasi box-shadow */
+            animation: neon-glow 1s infinite alternate; /* Animasi neon */
+        }
+
+        button:hover {
+            background-color: #000; /* Tombol latar hitam */
+            color: #f00; /* Warna teks merah neon saat dihover */
+            box-shadow: 0px 12px 20px rgba(255, 0, 0, 0.8); /* Shadow yang lebih dramatis saat hover */
+            border: 2px solid rgba(255, 0, 0, 0.8); /* Warna border merah lebih intens saat hover */
+            animation: none; /* Menonaktifkan animasi saat tombol dihover */
+        }
+
+        @keyframes neon-glow {
+            0% {
+                text-shadow: 0 0 10px #f00, 0 0 20px #ff55aa, 0 0 30px #ffbb00;
+            }
+            100% {
+                text-shadow: 0 0 20px #f00, 0 0 40px #ff55aa, 0 0 60px #ffbb00;
+            }
+        }
+
+        /* Animasi untuk memindahkan teks di atas tombol */
+        .move-up {
+            position: absolute;
+            top: -80px; /* Sesuaikan dengan posisi yang Anda inginkan */
+            opacity: 0;
+            animation: forwards 6s; /* Tunda selama 6 detik setelah selesai mengetik */
+        }
+
+        @keyframes appearAndType {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes typing {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+    
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <p>Game Over</p>
+        <button onclick="retryGame()">Coba Lagi</button>
+    </div>
+
+    <script>
+        function retryGame() {
+            // Mengarahkan pemain kembali ke "index.html" di jendela yang sama
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

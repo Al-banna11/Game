@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="Icon" href="img/logo.png" type="image/Icon">
+  <title> Form </title>
+  <link rel="stylesheet" href="form.css">
+
+</head>
+
+<body>
+
+  <body>
+
+    <audio autoplay loop id="background-audio">
+      <source src="form.mp3" type="audio/mpeg">
+  </audio>
+    
+
+    <div class="video-background">
+      <video autoplay muted loop>
+        <source src="bg-form.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="form-sign">
+
+      <form action="kamiyakawaii4@gmail.com" method="post" enctype="text/plain">
+        <h1>Login</h1>
+        <input type="text" placeholder="Name" name="Name" required>
+
+        <input type="text" placeholder="Number phone" name="PhoneNumber" required>
+        <input type="email"  autocomplete="on" placeholder="Email" name="Email" required>
+        <input type="password" placeholder="Password" name="Password" required>
+        <label id="sex" for="text">Sex</label>
+        <button id="sendButton" type="submit">SEND</button>
+      </form>
+      
+    </div>
+
+    <script>
+      // Fungsi untuk memulai ulang pemutaran suara
+      function restartAudio() {
+          var audio = document.getElementById('background-audio');
+          audio.currentTime = 0; // Mengatur waktu kembali ke awal
+          audio.play(); // Memulai pemutaran
+      }
+
+      // Mendengarkan peristiwa berakhir (ended) pada audio
+      document.getElementById('background-audio').addEventListener('ended', function() {
+          restartAudio();
+      });
+
+      // Memastikan audio tetap hidup selama pengguna berada di situs web
+      var audio = document.getElementById('background-audio');
+      document.addEventListener('visibilitychange', function () {
+          if (document.hidden) {
+              audio.pause(); // Jika tab tidak terlihat, pause audio
+          } else {
+              audio.play(); // Jika tab terlihat kembali, putar audio
+          }
+      });
+  </script>
+<script>
+  document.getElementById("sendButton").addEventListener("click", function () {
+    window.open("index.html", "_self");
+  });
+</script>
+
+<!-- Tambahkan library anime.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+<script>
+  // Animasi form saat halaman dimuat
+  anime({
+    targets: '.form-sign',
+    opacity: [0, 1],
+    translateY: ['-20px', '0px'],
+    duration: 1000,
+    easing: 'easeInOutQuad',
+    delay: 500
+  });
+
+  // Animasi button saat hover
+  const button = document.getElementById('sendButton');
+  button.addEventListener('mouseenter', () => {
+    anime({
+      targets: button,
+      scale: 1.1,
+      duration: 200
+    });
+  });
+
+  button.addEventListener('mouseleave', () => {
+    anime({
+      targets: button,
+      scale: 1,
+      duration: 200
+    });
+  });
+</script>
+
+
+  </body>
+
+</html>

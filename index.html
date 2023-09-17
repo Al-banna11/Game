@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styling.css" />
+    <link rel="Icon" href="img/logo.png" type="image/Icon">
+    <title>Games</title>
+</head>
+
+<body>
+
+    <audio autoplay loop id="background-audio">
+        <source src="bg-home.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="video-background">
+        <video autoplay muted loop>
+            <source src="bg-game (2).mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="score">
+        <div class="score__title">score</div>
+        <div class="score__number">0</div>
+    </div>
+
+
+    <div id="app">
+        <audio id="loseSound">
+            <source src="kalah.mp3" type="audio/mpeg">
+        </audio>
+
+        <audio id="winSound">
+            <source src="menang.mp3" type="audio/mpeg">
+        </audio>
+
+        <div class="summary">
+            <h1 class="title">MATCH RESULT</h1>
+            <br />
+            <h1 id="inGame"></h1>
+            <h3 id="result"></h3>
+        </div>
+        <div class="games">
+            <div class="option" onclick="pickOption('🖐')"><img src="icon-paper.svg" alt="Paper"></div>
+            <div class="option" onclick="pickOption('✌')"><img src="icon-scissors.svg" alt="Paper"></div>
+            <div class="option" onclick="pickOption('✊')"><img src="icon-rock.svg" alt="Paper"></div>
+        </div>
+    </div>
+
+
+    <script>
+        const summaryElement = document.querySelector('.summary');
+    
+        summaryElement.addEventListener('mouseover', () => {
+          summaryElement.style.transition = 'border-color 0.3s, font-family 0.3s, color 0.3s, transform 0.3s';
+          summaryElement.style.borderColor = '#ff00ea';
+          summaryElement.style.color = '#ff00ea';
+          summaryElement.style.boxShadow = '0px 0px 30px rgba(255, 0, 234, 0.9)';
+          summaryElement.style.transform = 'scale(1.05)';
+        });
+    
+        summaryElement.addEventListener('mouseout', () => {
+          summaryElement.style.transition = 'border-color 0.3s, font-family 0.3s, color 0.3s, transform 0.3s';
+          summaryElement.style.borderColor = 'transparent';
+          summaryElement.style.color = '#00ffea';
+          summaryElement.style.boxShadow = '0px 0px 20px rgba(0, 255, 234, 0.7)';
+          summaryElement.style.transform = 'scale(1)';
+        });
+      </script>
+  
+    <script>
+        // Fungsi untuk memulai ulang pemutaran suara
+        function restartAudio() {
+            var audio = document.getElementById('background-audio');
+            audio.currentTime = 0; // Mengatur waktu kembali ke awal
+            audio.play(); // Memulai pemutaran
+        }
+  
+        // Mendengarkan peristiwa berakhir (ended) pada audio
+        document.getElementById('background-audio').addEventListener('ended', function() {
+            restartAudio();
+        });
+  
+        // Memastikan audio tetap hidup selama pengguna berada di situs web
+        var audio = document.getElementById('background-audio');
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+                audio.pause(); // Jika tab tidak terlihat, pause audio
+            } else {
+                audio.play(); // Jika tab terlihat kembali, putar audio
+            }
+        });
+    </script>
+    
+
+    <script>
+        class Start {
+            constructor() {
+                this.playerName = "Player";
+                this.botName = "Deabot";
+                this.playerOption;
+                this.botOption;
+                this.winner = "";
+            }
+
+            get getBotOption() {
+                return this.botOption;
+            }
+
+            set setBotOption(option) {
+                this.botOption = option;
+            }
+
+            get getPlayerOption() {
+                return this.playerOption;
+            }
+
+            set setPlayerOption(option) {
+                this.playerOption = option;
+            }
+
+            botBrain() {
+                const option = ["🖐", "✌", "✊"];
+                const bot = option[Math.floor(Math.random() * option.length)];
+                return bot;
+            }
+
+            winCalculation() {
+                if (this.botOption == "🖐" && this.playerOption == "✌") {
+                    return (this.winner = this.playerName);
+                } else if (this.botOption == "🖐" && this.playerOption == "✊") {
+                    return (this.winner = this.botName);
+                } else if (this.botOption == "✌" && this.playerOption == "🖐") {
+                    return (this.winner = this.botName);
+                } else if (this.botOption == "✌" && this.playerOption == "✊") {
+                    return (this.winner = this.playerName);
+                } else if (this.botOption == "✊" && this.playerOption == "🖐") {
+                    return (this.winner = this.playerName);
+                } else if (this.botOption == "✊" && this.playerOption == "✌") {
+                    return (this.winner = this.botName);
+                } else {
+                    return (this.winner = "SERI");
+                }
+            }
+
+            matchResult() {
+                if (this.winner !== "SERI") {
+                    if (this.winner == this.playerName) {
+                        const winSound = document.getElementById("winSound");
+                        winSound.play(); // Memutar suara kemenangan jika player menang
+                    } else if (this.winner == this.botName) {
+                        const loseSound = document.getElementById("loseSound");
+                        loseSound.play();
+                        playerLossCount++;
+
+                        // Jika pemain kalah sekali, arahkan ke "game-over.html" di jendela yang sama
+                        if (playerLossCount === 2) {
+                            window.location.href = "game-over.html";
+                        }
+                    }
+                    return `${this.winner} MENANG!`;
+                } else {
+                    const loseSound = document.getElementById("loseSound");
+                    loseSound.play();
+                    return `WAAA ${this.winner}, GAK ADA YG MENANG 🤪`;
+                }
+            }
+        }
+
+        // Variabel untuk melacak jumlah kekalahan pemain
+        let playerLossCount = 0;
+
+        function pickOption(option) {
+    const start = new Start();
+    start.setPlayerOption = option;
+    start.setBotOption = start.botBrain();
+    start.winCalculation();
+
+    const inGame = document.getElementById("inGame");
+    const result = document.getElementById("result");
+
+    inGame.textContent = "...";
+    result.textContent = "...";
+
+    // Tambahkan animasi saat pemain memilih
+    const selectedOption = document.querySelector('.option[onclick="pickOption(\'' + option + '\')"]');
+    anime({
+        targets: selectedOption,
+        scale: 1.1,
+        duration: 100,
+        direction: 'alternate',
+        loop: 2
+    });
+
+    setTimeout(() => {
+        inGame.textContent = `${start.getPlayerOption} VS ${start.getBotOption}`;
+        result.textContent = start.matchResult();
+
+        // Menentukan hasil permainan dan mengelola skor
+        determineGameResult(start.getPlayerOption, start.getBotOption);
+    }, 1500);
+}
+
+    </script>
+
+    <script>// Variabel untuk melacak skor
+        let score = 0;
+
+        // Fungsi untuk menampilkan skor
+        function displayScore() {
+            const scoreNumber = document.querySelector(".score__number");
+            scoreNumber.textContent = score;
+        }
+
+        // Fungsi untuk menambah skor
+        function increaseScore() {
+            score++;
+            displayScore();
+        }
+
+        // Fungsi untuk mengurangi skor
+        function decreaseScore() {
+            score--;
+            displayScore();
+        }
+
+        // Fungsi untuk menentukan hasil permainan dan mengelola skor
+        function determineGameResult(playerOption, botOption) {
+            if (
+                (playerOption === "✌" && botOption === "🖐") ||
+                (playerOption === "✊" && botOption === "✌") ||
+                (playerOption === "🖐" && botOption === "✊")
+            ) {
+                // Jika player menang
+                increaseScore();
+            } else if (
+                (playerOption === "✌" && botOption === "✊") ||
+                (playerOption === "✊" && botOption === "🖐") ||
+                (playerOption === "🖐" && botOption === "✌")
+            ) {
+                // Jika player kalah
+                decreaseScore();
+            }
+        }
+
+        // Contoh penggunaan dalam fungsi pickOption
+        function pickOption(playerOption) {
+            const start = new Start();
+            start.setPlayerOption = playerOption;
+            start.setBotOption = start.botBrain();
+            start.winCalculation();
+
+            const inGame = document.getElementById("inGame");
+            const result = document.getElementById("result");
+
+            inGame.textContent = "...";
+            result.textContent = "...";
+
+            setTimeout(() => {
+                inGame.textContent = `${start.getPlayerOption} VS ${start.getBotOption}`;
+                result.textContent = start.matchResult();
+
+                // Menentukan hasil permainan dan mengelola skor
+                determineGameResult(start.getPlayerOption, start.getBotOption);
+            }, 1500);
+        }
+    </script>
+
+
+
+<script>
+// Variabel untuk melacak putaran permainan
+let gameRound = 0;
+let consecutivePlayerWins = 0; // Melacak kemenangan berturut-turut pemain
+
+// Fungsi untuk memulai permainan
+function startGame() {
+    // Reset skor, putaran permainan, dan kemenangan berturut-turut pemain
+    score = 0;
+    gameRound = 0;
+    consecutivePlayerWins = 0;
+    displayScore();
+    playGameRound();
+}
+
+// Fungsi untuk memainkan satu putaran permainan
+function playGameRound() {
+    if (consecutivePlayerWins < 3) {
+        // Pemain harus menang berturut-turut selama 3 putaran pertama
+        pickOption("✌"); // Pemain memilih "Batu" (atau opsi lainnya)
+
+        // Cek apakah pemain menang
+        if (start.winner == start.playerName) {
+            consecutivePlayerWins++; // Tambah kemenangan berturut-turut pemain
+        } else {
+            consecutivePlayerWins = 0; // Jika kalah, ulangi hitungan kemenangan pemain berturut-turut
+        }
+    } else {
+        // Setelah pemain menang 3 kali berturut-turut
+        if (score >= 2) {
+            // Jika pemain mencapai skor 2 atau lebih, Deabot akan menang seterusnya sampai game over
+            pickOption("🖐"); // Pemain memilih "Gunting" (atau opsi lainnya)
+
+            // Cek apakah Deabot menang
+            if (start.winner == start.botName) {
+                // Jika Deabot menang, game over
+                alert("Game Over!");
+            }
+        } else {
+            // Jika skor pemain kurang dari 2, permainan masih berlanjut
+            pickOption("🖐"); // Pemain memilih "Gunting" (atau opsi lainnya)
+        }
+    }
+}
+
+
+</script>
+
+
+</body>
+
+</html>
